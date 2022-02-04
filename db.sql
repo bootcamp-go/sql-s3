@@ -1,172 +1,123 @@
-create table buyers
-(
-    id             integer
-        constraint employees_pk
-            primary key autoincrement,
-    card_number_id varchar,
-    first_name     varchar,
-    last_name      varchar
+drop database melisprint;
+create database melisprint;
+use melisprint;
+
+create table products(
+    `id` int not null primary key auto_increment,
+    `description` text not null,
+    expiration_rate float not null,
+    freezing_rate float not null,
+    height float not null,
+    lenght float not null,
+    netweight float not null,
+    product_code text not null,
+    recommended_freezing_temperature float not null,
+    width float not null,
+    id_product_type int not null,
+    id_seller int not null
 );
-
-create unique index buyers_id_uindex
-    on buyers (id);
-
-create table employees
-(
-    id             integer
-        constraint employees_pk
-            primary key autoincrement,
-    card_number_id varchar,
-    first_name     varchar,
-    last_name      varchar,
-    warehouse_id   int
+create table employees(
+    `id` int not null primary key auto_increment,
+    card_number_id text not null,
+    first_name text not null,
+    last_name text not null,
+    warehouse_id int not null
 );
-
-create unique index employees_id_uindex
-    on employees (id);
-
-create table products
-(
-    id                               INTEGER not null
-        primary key autoincrement,
-    description                      TEXT,
-    expiration_rate                  INTEGER,
-    freezing_rate                    INTEGER,
-    height                           INTEGER not null,
-    lenght                           INTEGER not null,
-    netweight                        INTEGER not null,
-    product_code                     TEXT    not null,
-    recommended_freezing_temperature INTEGER,
-    width                            INTEGER not null,
-    id_product_type                  INTEGER,
-    id_seller                        INTEGER
+create table warehouses(
+    `id` int not null primary key auto_increment,
+    `address` text null,
+    telephone text null,
+    warehouse_code text null,
+    minimum_capacity int null,
+    minimum_temperature int null
 );
-
-create table sections
-(
-    id                  integer
-        constraint sections_pk
-            primary key autoincrement,
-    section_number      int,
-    current_temperature int,
-    minimum_temperature int,
-    current_capacity    int,
-    minimum_capacity    int,
-    maximum_capacity    int,
-    warehouse_id        int,
-    product_type_id     int
+create table sections(
+    `id` int not null primary key auto_increment,
+    section_number int not null,
+    current_temperature int not null,
+    minimum_temperature int not null,
+    current_capacity int not null,
+    minimum_capacity int not null,
+    maximum_capacity int not null,
+    warehouse_id int not null,
+    id_product_type int not null
 );
-
-create unique index sections_id_uindex
-    on sections (id);
-
-create table sellers
-(
-    id           integer not null
-        constraint sellers_pk
-            primary key autoincrement,
-    cid          int     not null,
-    company_name varchar not null,
-    address      varchar not null,
-    telephone    varchar not null,
-    locality_id  int     not null
+create table sellers(
+    `id` int not null primary key auto_increment,
+    cid int not null,
+    company_name text not null,
+    `address` text not null,
+    telephone varchar(15) not null
 );
-
-create unique index sellers_cid_uindex
-    on sellers (cid);
-
-create unique index sellers_id_uindex
-    on sellers (id);
-
-create table users
-(
-    id       INTEGER not null
-        primary key autoincrement,
-    password TEXT    not null,
-    username TEXT    not null
-);
-
-create table warehouses
-(
-    id                  integer
-        constraint warehouses_pk
-            primary key autoincrement,
-    address             varchar,
-    telephone           varchar,
-    warehouse_code      varchar,
-    minimun_capacity    int,
-    minimun_temperature int,
-    section_number      int
+create table buyers(
+    `id` int not null primary key auto_increment,
+    card_number_id text not null,
+    first_name text not null,
+    last_name text not null
 );
 
 create unique index warehouses_id_uindex
     on warehouses (id);
 
-CREATE TABLE "localities"
+CREATE TABLE localities
 (
-    "id"            INTEGER,
-    "locality_name" TEXT,
-    "province_name" TEXT,
-    "country_name"  TEXT,
-    PRIMARY KEY ("id" AUTOINCREMENT)
+    `id` int not null primary key auto_increment,
+    locality_name TEXT,
+    province_name TEXT,
+    country_name  TEXT
 );
 
-CREATE TABLE "carries"
+CREATE TABLE carries
 (
-    "cid"          TEXT,
-    "company_name" TEXT,
-    "address"      TEXT,
-    "telephone"    TEXT,
-    "locality_id"  INTEGER NOT NULL,
-    "batch_number" INTEGER,
-    "id"           INTEGER,
-    PRIMARY KEY ("id" AUTOINCREMENT)
+    cid          TEXT,
+    company_name TEXT,
+    address      TEXT,
+    telephone    TEXT,
+    locality_id  int NOT NULL,
+    batch_number int,
+    `id` int not null primary key auto_increment
 );
 
-CREATE TABLE "product_batches"
+CREATE TABLE product_batches
 (
-    "id"                  INTEGER,
-    "batch_number"        TEXT,
-    "current_quantity"    INTEGER,
-    "current_temperature" NUMERIC,
-    "due_date"            TEXT,
-    "initial_quantity"    INTEGER,
-    "manufacturing_date"  TEXT,
-    "minimum_temperature" NUMERIC,
-    "product_id"          INTEGER,
-    "section_id"          INTEGER,
-    PRIMARY KEY ("id" AUTOINCREMENT)
+    `id` int not null primary key auto_increment,
+    batch_number        TEXT,
+    current_quantity    int,
+    current_temperature float,
+    due_date            datetime,
+    initial_quantity    int,
+    manufacturing_date  datetime,
+    minimum_temperature float,
+    product_id          int,
+    section_id          int
 );
 
-CREATE TABLE "product_records"
+CREATE TABLE product_records
 (
-    "id"               INTEGER,
-    "last_update_date" TEXT,
-    "purchase_price"   NUMERIC,
-    "sale_price"       NUMERIC,
-    "product_id"       INTEGER,
-    PRIMARY KEY ("id" AUTOINCREMENT)
+    `id` int not null primary key auto_increment,
+    last_update_date datetime,
+    purchase_price   float,
+    sale_price       float,
+    product_id       int
 );
 
-CREATE TABLE "purchase_orders"
+CREATE TABLE purchase_orders
 (
-    "id"                INTEGER,
-    "order_number"      TEXT,
-    "order_date"        TEXT,
-    "tracking_code"     TEXT,
-    "buyer_id"          INTEGER,
-    "product_record_id" INTEGER,
-    "order_status_id"   INTEGER,
-    PRIMARY KEY ("id" AUTOINCREMENT)
+    `id` int not null primary key auto_increment,
+    order_number      TEXT,
+    order_date        datetime,
+    tracking_code     TEXT,
+    buyer_id          int,
+    product_record_id int,
+    order_status_id   int
 );
 
-CREATE TABLE "inbound_orders"
+CREATE TABLE inbound_orders
 (
-    "id"               INTEGER,
-    "order_date"       TEXT,
-    "order_number"     TEXT,
-    "employee_id"      INTEGER,
-    "product_batch_id" INTEGER,
-    "warehouse_id"     INTEGER,
-    PRIMARY KEY ("id" AUTOINCREMENT)
+    `id` int not null primary key auto_increment,
+    order_date       datetime,
+    order_number     TEXT,
+    employee_id      int,
+    product_batch_id int,
+    warehouse_id     int
 );
